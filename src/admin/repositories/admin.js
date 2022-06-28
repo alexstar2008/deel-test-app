@@ -7,7 +7,7 @@ class AdminRepository {
   getMostEarnedProfession(startDate, endDate) {
     return Job.findOne({
       attributes: [
-        [sequelize.col('Contract->Contractor.profession'), 'profession'],
+        [sequelize.col('Contract->Contractor.profession'), 'professionName'],
         [sequelize.fn('sum', sequelize.col('price')), 'totalPrice'],
       ],
       where: {

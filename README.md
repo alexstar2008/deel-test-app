@@ -45,9 +45,9 @@ The exercise requires [Node.js](https://nodejs.org/en/) to be installed. We reco
 2. Added basics for linting & code formatting to keep code base in the proper way
 3. Implemented param validation for routes to prevent issues with incorrect parameters
 4. Seperated business logic from express framework specifics.
+5. Some Swagger documentation for easier integration.
 
 ## Possible improvements (TODO list)
-1. Create Swagger OpenApi documentation
-2. Implement integration tests to check endpoinds e2e
-3. Implement unit tests for services
-4. Create database migrations instead of sync on sequelize models.
+1. Implement integration tests to check endpoinds e2e
+2. Implement unit tests for services
+3. Create database migrations instead of sync on sequelize models.

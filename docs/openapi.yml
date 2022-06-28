@@ -1,0 +1,546 @@
+openapi: 3.0.0
+info:
+  title: Deel test app
+  version: 1.0.0
+  contact: 
+    email: 'alexey.starovoytenko@gmail.com'
+servers:
+  - url: http://localhost:3001
+    description: Local server
+
+tags:
+  - name: contracts
+    description: Contracts
+  - name: jobs
+    description: Jobs
+  - name: admin
+    description: Admin
+  - name: balances
+    description: Balance
+
+paths:
+  /contracts:
+    get:
+      tags:
+        - contracts
+      summary: Get all not terminated contracts
+      description: Get all not terminated contracts by user
+      operationId: getContracts
+      parameters:
+        - in: header
+          name: profile_id
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: user profile id
+      responses:
+        200:
+          description: Succes Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  contracts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          type: integer
+                        terms: 
+                          type: string
+                        status: 
+                          type: string
+                        createdAt:
+                          type: string
+                          formate: date-time
+                        updatedAt:
+                          type: string
+                          formate: date-time
+                        ContractorId: 
+                          type: integer
+                        ClientId: 
+                          type: integer
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+  /contracts/{id}:
+    get:
+      tags:
+        - contracts
+      summary: Get contract by id with owner check
+      description: Get contract by id with owner check
+      operationId: getContractById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: contract id
+        - in: header
+          name: profile_id
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: user profile id
+      responses:
+        200:
+          description: Succes Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  contract:
+                    type: object
+                    properties:
+                      id: 
+                        type: integer
+                      terms: 
+                        type: string
+                      status: 
+                        type: string
+                      createdAt:
+                        type: string
+                        formate: date-time
+                      updatedAt:
+                        type: string
+                        formate: date-time
+                      ContractorId: 
+                        type: integer
+                      ClientId: 
+                        type: integer
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        404:
+          description: Contract was not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+  /jobs/unpaid:
+    get:
+      tags:
+        - jobs
+      summary: Get active unpaid jobs by user
+      description: Get active unpaid jobs by user
+      operationId: getActiveUnpaidJobs
+      parameters:
+        - in: header
+          name: profile_id
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: user profile id
+      responses:
+        200:
+          description: Succes Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  jobs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          type: integer
+                        description: 
+                          type: string
+                        price:
+                          type: number
+                        paid:
+                          type: boolean
+                        paymentDate:
+                          type: string
+                          formate: date
+                        createdAt:
+                          type: string
+                          formate: date-time
+                        updatedAt:
+                          type: string
+                          formate: date-time
+                        ContractId:
+                          type: integer
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+  /jobs/{jobId}/pay:
+    post:
+      tags:
+        - jobs
+      summary: Pay job by client
+      description: Pay job by client
+      operationId: payJob
+      parameters:
+        - in: path
+          name: jobId
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: job id
+        - in: header
+          name: profile_id
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: user profile id
+      responses:
+        200:
+          description: Succes Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        404:
+          description: Not Found Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        422:
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+  /balances/deposit/{userId}:
+    post:
+      tags:
+        - balances
+      summary: Deposit client balance
+      description: Deposit client balance (<= 25% of needed jobs to pay)
+      operationId: depositClientBalance
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: user id
+        - in: header
+          name: profile_id
+          schema:
+            type: integer
+          required: true
+          example: 1
+          description: user profile id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+              properties:
+                amount:
+                  type: integer
+      responses:
+        200:
+          description: Succes Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        422:
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+  /admin/best-profession:
+    get:
+      tags:
+        - admin
+      summary: Get the most paid profession
+      description: Get the most paid profession based on paid jobs
+      operationId: getMostEarnedProfession
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: string
+            formate: date
+          required: true
+          example: 1
+          description: start date of period
+        - in: query
+          name: end
+          schema:
+            type: string
+            formate: date
+          required: true
+          example: 1
+          description: end date of period
+      responses:
+        200:
+          description: Succes Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  profession:
+                    type: object
+                    properties:
+                      professionName: 
+                        type: string
+                      totalPrice: 
+                        type: number
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+  /admin/best-clients:
+    get:
+      tags:
+        - admin
+      summary: Get the clients who paid the most
+      description: Get the clients who paid the most based on jobs
+      operationId: getMostPaidClients
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: string
+            formate: date
+          required: true
+          example: 1
+          description: start date of period
+        - in: query
+          name: end
+          schema:
+            type: string
+            formate: date
+          required: true
+          example: 1
+          description: end date of period
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 2
+          example: 1
+          description: limit of the rating
+      responses:
+        200:
+          description: Succes Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  clients:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          type: integer
+                        fullName: 
+                          type: string
+                        paid: 
+                          type: integer
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string

@@ -6,6 +6,7 @@ const contractsRouter = require('./contracts/router');
 const jobRouter = require('./jobs/router');
 const adminRouter = require('./admin/router');
 const balanceRouter = require('./balance/router');
+const swaggerRouter = require('./tools/serveSwagger');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
  * framework - just for routing, nothing more
  */
 app.use('/admin', adminRouter);
+app.use('/api-docs', swaggerRouter);
 app.use(getProfile);
 app.use('/balances', balanceRouter);
 app.use('/contracts', contractsRouter);

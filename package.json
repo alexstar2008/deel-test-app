@@ -17,7 +17,8 @@
     "start-dev": "node ./src/server.js",
     "seed": "node ./scripts/seedDb.js",
     "lint": "npm run lint:write",
-    "lint:write": "npx eslint --fix ."
+    "lint:write": "npx eslint --fix .",
+    "test": "jest"
   },
   "devDependencies": {
     "concurrently": "4.1.0",
@@ -29,6 +30,7 @@
     "eslint-plugin-jest": "^26.2.2",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^8.0.0",
+    "jest": "^28.1.1",
     "lint-staged": "^12.4.1",
     "nodemon": "1.19.1",
     "prettier": "^2.6.2"

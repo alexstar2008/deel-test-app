@@ -39,3 +39,15 @@ The exercise requires [Node.js](https://nodejs.org/en/) to be installed. We reco
 1. Then run `npm start` which should start both the server and the React client.
 
 ## Improvements in the version 1.0.0
+
+1. Moved to layered structure to have proper seperation by concerns
+(interface -> controller, business -> service, data -> repositories)
+2. Added basics for linting & code formatting to keep code base in the proper way
+3. Implemented param validation for routes to prevent issues with incorrect parameters
+4. Seperated business logic from express framework specifics.
+
+## Possible improvements (TODO list)
+1. Create Swagger OpenApi documentation
+2. Implement integration tests to check endpoinds e2e
+3. Implement unit tests for services
+4. Create database migrations instead of sync on sequelize models.

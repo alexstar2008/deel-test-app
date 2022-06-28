@@ -7,26 +7,34 @@ const adminService = new AdminService({
 });
 
 class AdminController {
-  static async getMostEarnedProfession(req, res) {
-    const { start, end } = req.query;
+  static async getMostEarnedProfession(req, res, next) {
+    try {
+      const { start, end } = req.query;
 
-    const profession = await adminService.getMostEarnedProfession(start, end);
+      const profession = await adminService.getMostEarnedProfession(start, end);
 
-    res.json({
-      success: true,
-      profession,
-    });
+      res.json({
+        success: true,
+        profession,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
 
-  static async getMostPaidClients(req, res) {
-    const { start, end, limit = 2 } = req.query;
+  static async getMostPaidClients(req, res, next) {
+    try {
+      const { start, end, limit = 2 } = req.query;
 
-    const clients = await adminService.getMostPaidClients(start, end, limit);
+      const clients = await adminService.getMostPaidClients(start, end, limit);
 
-    res.json({
-      success: true,
-      clients,
-    });
+      res.json({
+        success: true,
+        clients,
+      });
+    } catch (e) {
+      next(e);
+    }
   }
 }
 

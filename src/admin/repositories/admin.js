@@ -13,10 +13,7 @@ class AdminRepository {
       where: {
         paid: true,
         paymentDate: {
-          [Op.between]: {
-            startDate,
-            endDate,
-          },
+          [Op.between]: [startDate, endDate],
         },
       },
       include: {
@@ -35,22 +32,19 @@ class AdminRepository {
   }
 
   getMostPaidClients(startDate, endDate, limit) {
-    console.log({
-      startDate, endDate, limit
-    })
     return Job.findAll({
       attributes: [
         [sequelize.col('Contract->Client.id'), 'id'],
-        [sequelize.literal("'Contract->Client'.firstName || ' ' || 'Contract->Client'.lastName"), 'fullName'],
+        [
+          sequelize.literal("'Contract->Client'.firstName || ' ' || 'Contract->Client'.lastName"),
+          'fullName',
+        ],
         [sequelize.fn('sum', sequelize.col('price')), 'paid'],
       ],
       where: {
         paid: true,
         paymentDate: {
-          [Op.between]: [
-            startDate,
-            endDate,
-          ]
+          [Op.between]: [startDate, endDate],
         },
       },
       include: {

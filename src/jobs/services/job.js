@@ -1,3 +1,5 @@
+const { NotFoundError, AppError } = require('../../errors');
+
 class JobService {
   constructor(repositories) {
     this.jobRepository = repositories.jobRepository;
@@ -9,13 +11,13 @@ class JobService {
   }
 
   async payJob(jobId, clientId) {
-    const job = await this.jobRepository.getJob(jobId, clientId, true);
+    const job = await this.jobRepository.getUnpaidJob(jobId, clientId);
     if (!job) {
-      throw new Error('Job is not found or paid already');
+      throw new NotFoundError('Job is not found or paid already');
     }
     const profile = await this.balanceRepository.getClientBalance(clientId);
     if (profile.balance < job.price) {
-      throw new Error('Not enough money to pay');
+      throw new AppError('Not enough money to pay');
     }
     await this.jobRepository.updateJobPaidAndContractorBalance(jobId);
   }

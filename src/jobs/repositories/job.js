@@ -92,11 +92,13 @@ class JobsRepository {
     });
   }
 
-  getJob(jobId, clientId, paid) {
+  getUnpaidJob(jobId, clientId) {
     return Job.findOne({
       where: {
         id: jobId,
-        paid
+        paid: {
+          [Op.not]: true,
+        },
       },
       include: {
         model: Contract,

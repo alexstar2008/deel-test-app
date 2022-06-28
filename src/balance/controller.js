@@ -1,6 +1,7 @@
 const { BalanceService } = require('./services');
 const { BalanceRepository } = require('./repositories');
 const { JobRepository } = require('../jobs/repositories');
+const { UnauthorizedError } = require('../errors');
 
 const balanceRepository = new BalanceRepository();
 const jobRepository = new JobRepository();
@@ -10,21 +11,24 @@ const balanceService = new BalanceService({
 });
 
 class BalanceController {
-  static async depositClientBalance(req, res) {
-    const { clientId } = req.profile;
-    const { userId } = req.params;
-    const { amount } = req.body;
+  static async depositClientBalance(req, res, next) {
+    try {
+      const { clientId } = req.profile;
+      const { userId } = req.params;
+      const { amount } = req.body;
 
-    if (!clientId || Number(clientId) !== Number(userId)) {
-      res.status(401).send('No permission to deposit to account');
-      return;
+      if (!clientId || Number(clientId) !== Number(userId)) {
+        throw new UnauthorizedError('No permission to deposit to account');
+      }
+
+      await balanceService.depositClientBalance(amount, clientId);
+
+      res.json({
+        success: true,
+      });
+    } catch (e) {
+      next(e);
     }
-
-    await balanceService.depositClientBalance(amount, clientId);
-
-    res.json({
-      success: true,
-    });
   }
 }
 

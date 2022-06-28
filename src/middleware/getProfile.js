@@ -1,8 +1,11 @@
 const { Profile } = require('../model');
+const { UnauthorizedError } = require('../errors');
 
 const getProfile = async (req, res, next) => {
   const profile = await Profile.findOne({ where: { id: req.get('profile_id') || 0 } });
-  if (!profile) return res.status(401).end();
+  if (!profile) {
+    throw new UnauthorizedError('No provided authorization header');
+  }
   const profileBasicData = {};
   if (profile.type === 'contractor') {
     profileBasicData.contractorId = profile.id;
